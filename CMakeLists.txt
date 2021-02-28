@@ -1,19 +1,38 @@
-# 项目名称
-project(SerialPort)
+############################################################################
+# ==>> Basic Setting
+############################################################################
+cmake_minimum_required(VERSION 3.5)
+# Project name | ${PROJECT_NAME}
+project(demo)
 
-# CMake版本要求
-cmake_minimum_required(VERSION 3.0)
-
-# 头文件路径
-include_directories(${CMAKE_CURRENT_LIST_DIR}/include)
-
-# 源文件路径
-aux_source_directory(./src DIR_SRCS)
-
-# 生成动态链接库
+############################################################################
+# ==>> Generate a library
+############################################################################
+# Output of the library
 set(LIBRARY_OUTPUT_PATH ${CMAKE_SOURCE_DIR}/lib)
-add_library(serialport SHARED ./src/serialport.cpp ./include/serialport.h)
+# Generate the library from the library sources
+add_library(demo_lib SHARED
+  lib/src/serialport.cpp
+)
 
-# 生成可执行文件
-add_executable(comtest ${DIR_SRCS})
+target_include_directories(demo_lib PUBLIC
+  ${PROJECT_SOURCE_DIR}/include
+)
+
+############################################################################
+# ==>> Create an executable
+############################################################################
+# Source directories
+aux_source_directory(${CMAKE_SOURCE_DIR}/src DIR_SRCS)
+# Include directories
+include_directories(${CMAKE_SOURCE_DIR}/include)
+# Add an executable with the above sources
+add_executable(demo_bin
+  ${DIR_SRCS}
+)
+
+# Link the demo_lib target with the demo_bin target
+target_link_libraries(demo_bin PRIVATE
+  demo_lib
+)
 
