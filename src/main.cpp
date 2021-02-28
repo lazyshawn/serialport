@@ -1,5 +1,5 @@
 
-#include "../include/serialport_driver.hpp"
+#include "../include/serialport.h"
 #include "../include/common.h"
 
 #define DEVICE "/dev/ttyUSB0"
